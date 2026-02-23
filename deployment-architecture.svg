@@ -1,0 +1,322 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" font-family="'Segoe UI', Arial, sans-serif">
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#64748b"/>
+    </marker>
+    <marker id="arr-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#3b82f6"/>
+    </marker>
+    <marker id="arr-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#10b981"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f97316"/>
+    </marker>
+    <marker id="arr-purple" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#818cf8"/>
+    </marker>
+  </defs>
+
+  <!-- BG -->
+  <rect width="1200" height="900" fill="#080e1c" rx="16"/>
+  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+    <path d="M40 0L0 0 0 40" fill="none" stroke="#ffffff06" stroke-width="1"/>
+  </pattern>
+  <rect width="1200" height="900" fill="url(#grid)"/>
+
+  <!-- ══════════════ TITLE ══════════════ -->
+  <text x="600" y="44" text-anchor="middle" font-size="21" font-weight="700" fill="#f1f5f9" letter-spacing="0.5">Frontend Blue-Green Deployment Architecture</text>
+  <text x="600" y="66" text-anchor="middle" font-size="12" fill="#475569">GitHub Actions CI/CD  ·  PM2 Blue-Green  ·  Nginx Reverse Proxy</text>
+
+  <!-- ══════════════ SECTION 1: CI/CD Pipeline ══════════════ -->
+  <text x="30" y="95" font-size="10" font-weight="700" fill="#475569" letter-spacing="2">① CI/CD PIPELINE  (GitHub Actions · self-hosted runner)</text>
+
+  <!-- Step boxes: y=106, height=64, gap=8 -->
+  <!-- 1. GitHub -->
+  <rect x="30" y="106" width="130" height="64" rx="8" fill="#161b22" stroke="#30363d" stroke-width="1.5"/>
+  <text x="95" y="130" text-anchor="middle" font-size="11" font-weight="700" fill="#e2e8f0">GitHub</text>
+  <text x="95" y="146" text-anchor="middle" font-size="10" fill="#64748b">PR → main Merge</text>
+  <text x="95" y="159" text-anchor="middle" font-size="10" fill="#64748b">Workflow 트리거</text>
+
+  <line x1="160" y1="138" x2="174" y2="138" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 2. Checkout + Node -->
+  <rect x="177" y="106" width="140" height="64" rx="8" fill="#1a1f35" stroke="#3b4a7a" stroke-width="1.5"/>
+  <text x="247" y="128" text-anchor="middle" font-size="11" font-weight="700" fill="#93c5fd">Checkout &amp; Setup</text>
+  <text x="247" y="143" text-anchor="middle" font-size="10" fill="#64748b">actions/checkout@v4</text>
+  <text x="247" y="157" text-anchor="middle" font-size="10" fill="#64748b">Node 20.11.1 · npm i</text>
+
+  <line x1="317" y1="138" x2="331" y2="138" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 3. S3 .env -->
+  <rect x="334" y="106" width="140" height="64" rx="8" fill="#0d2318" stroke="#1e5438" stroke-width="1.5"/>
+  <text x="404" y="128" text-anchor="middle" font-size="11" font-weight="700" fill="#6ee7b7">AWS S3 .env</text>
+  <text x="404" y="143" text-anchor="middle" font-size="10" fill="#64748b">configure-aws-credentials</text>
+  <text x="404" y="157" text-anchor="middle" font-size="10" fill="#64748b">s3 cp .prod.env → .env</text>
+
+  <line x1="474" y1="138" x2="488" y2="138" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 4. Build -->
+  <rect x="491" y="106" width="120" height="64" rx="8" fill="#1e1a35" stroke="#5b4a8a" stroke-width="1.5"/>
+  <text x="551" y="128" text-anchor="middle" font-size="11" font-weight="700" fill="#c4b5fd">Build</text>
+  <text x="551" y="143" text-anchor="middle" font-size="10" fill="#64748b">npm run build</text>
+  <text x="551" y="157" text-anchor="middle" font-size="10" fill="#64748b">.next 디렉토리 생성</text>
+
+  <line x1="611" y1="138" x2="625" y2="138" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 5. SSH Key -->
+  <rect x="628" y="106" width="150" height="64" rx="8" fill="#201a1a" stroke="#7a3535" stroke-width="1.5"/>
+  <text x="703" y="128" text-anchor="middle" font-size="11" font-weight="700" fill="#fca5a5">임시 SSH Key</text>
+  <text x="703" y="143" text-anchor="middle" font-size="10" fill="#64748b">RSA 키 생성 (temp_key)</text>
+  <text x="703" y="157" text-anchor="middle" font-size="10" fill="#64748b">EC2 Instance Connect 등록</text>
+
+  <line x1="778" y1="138" x2="792" y2="138" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 6. SCP -->
+  <rect x="795" y="106" width="140" height="64" rx="8" fill="#201a20" stroke="#7a3a60" stroke-width="1.5"/>
+  <text x="865" y="128" text-anchor="middle" font-size="11" font-weight="700" fill="#f9a8d4">SCP 전송</text>
+  <text x="865" y="143" text-anchor="middle" font-size="10" fill="#64748b">.next → EC2</text>
+  <text x="865" y="157" text-anchor="middle" font-size="10" fill="#64748b">~/ems-admin/.next</text>
+
+  <line x1="935" y1="138" x2="949" y2="138" stroke="#475569" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- 7. SSH Deploy -->
+  <rect x="952" y="106" width="210" height="64" rx="8" fill="#101f0a" stroke="#3a6e14" stroke-width="1.5"/>
+  <text x="1057" y="128" text-anchor="middle" font-size="11" font-weight="700" fill="#bef264">SSH Deploy</text>
+  <text x="1057" y="143" text-anchor="middle" font-size="10" fill="#64748b">git pull · npm install</text>
+  <text x="1057" y="157" text-anchor="middle" font-size="10" fill="#a3e635">npm run deploy  (deploy.sh)</text>
+
+  <!-- divider -->
+  <line x1="30" y1="192" x2="1170" y2="192" stroke="#1e293b" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- ══════════════ SECTION 2: deploy.sh ══════════════ -->
+  <text x="30" y="213" font-size="10" font-weight="700" fill="#475569" letter-spacing="2">② EC2 — deploy.sh  (Blue-Green 전환 로직)</text>
+
+  <!-- Container -->
+  <rect x="30" y="223" width="730" height="220" rx="12" fill="#090e1a" stroke="#1e3a5f" stroke-width="1.5"/>
+
+  <!-- Step A: PM2 Check -->
+  <rect x="54" y="244" width="156" height="56" rx="8" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="132" y="267" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8">PM2 상태 확인</text>
+  <text x="132" y="282" text-anchor="middle" font-size="10" fill="#64748b">blue online?</text>
+  <text x="132" y="295" text-anchor="middle" font-size="10" fill="#64748b">green online?</text>
+
+  <line x1="210" y1="272" x2="232" y2="272" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Diamond -->
+  <polygon points="272,244 316,272 272,300 228,272" fill="#0f1e30" stroke="#3b82f6" stroke-width="1.5"/>
+  <text x="272" y="268" text-anchor="middle" font-size="9" fill="#93c5fd">현재</text>
+  <text x="272" y="281" text-anchor="middle" font-size="9" fill="#93c5fd">프로세스?</text>
+
+  <!-- Branch: blue → target green (down-left) -->
+  <line x1="228" y1="272" x2="136" y2="330" stroke="#10b981" stroke-width="1.5" marker-end="url(#arr-green)"/>
+  <text x="153" y="323" font-size="9" fill="#10b981">blue 실행중</text>
+
+  <!-- Branch: green → target blue (down-right) -->
+  <line x1="316" y1="272" x2="406" y2="330" stroke="#3b82f6" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <text x="326" y="323" font-size="9" fill="#3b82f6">green 실행중</text>
+
+  <!-- Branch: none → first deploy (right) -->
+  <line x1="316" y1="272" x2="550" y2="272" stroke="#f97316" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-orange)"/>
+  <text x="430" y="263" text-anchor="middle" font-size="9" fill="#f97316">없음 (최초 배포)</text>
+
+  <!-- Green target box -->
+  <rect x="54" y="334" width="164" height="56" rx="8" fill="#0a2018" stroke="#10b981" stroke-width="2"/>
+  <text x="136" y="355" text-anchor="middle" font-size="11" font-weight="700" fill="#10b981">▶ green 시작</text>
+  <text x="136" y="369" text-anchor="middle" font-size="10" fill="#6ee7b7">port :20161</text>
+  <text x="136" y="382" text-anchor="middle" font-size="10" fill="#475569">nginx → :20161</text>
+
+  <!-- Blue target box -->
+  <rect x="324" y="334" width="164" height="56" rx="8" fill="#081425" stroke="#3b82f6" stroke-width="2"/>
+  <text x="406" y="355" text-anchor="middle" font-size="11" font-weight="700" fill="#3b82f6">▶ blue 시작</text>
+  <text x="406" y="369" text-anchor="middle" font-size="10" fill="#93c5fd">port :20160</text>
+  <text x="406" y="382" text-anchor="middle" font-size="10" fill="#475569">nginx → :20160</text>
+
+  <!-- First deploy box -->
+  <rect x="490" y="244" width="196" height="56" rx="8" fill="#101a08" stroke="#65a30d" stroke-width="1.5" stroke-dasharray="6,3"/>
+  <text x="588" y="265" text-anchor="middle" font-size="11" font-weight="700" fill="#bef264">▶ blue 시작 (최초)</text>
+  <text x="588" y="280" text-anchor="middle" font-size="10" fill="#64748b">port :20160</text>
+  <text x="588" y="293" text-anchor="middle" font-size="10" fill="#64748b">nginx start (최초 기동)</text>
+
+  <!-- Merge to nginx reload -->
+  <line x1="136" y1="390" x2="136" y2="415" stroke="#10b981" stroke-width="1.5"/>
+  <line x1="406" y1="390" x2="406" y2="415" stroke="#3b82f6" stroke-width="1.5"/>
+  <line x1="136" y1="415" x2="406" y2="415" stroke="#64748b" stroke-width="1.5"/>
+  <line x1="271" y1="415" x2="271" y2="408" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- nginx reload box -->
+  <rect x="160" y="390" width="224" height="36" rx="8" fill="#18183a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="272" y="407" text-anchor="middle" font-size="10" font-weight="700" fill="#a5b4fc">nginx -s reload</text>
+  <text x="272" y="420" text-anchor="middle" font-size="10" fill="#64748b">구 프로세스(pm2 delete) 삭제</text>
+
+  <!-- ══════════════ SECTION 2: Nginx Runtime (right) ══════════════ -->
+  <rect x="780" y="223" width="390" height="220" rx="12" fill="#090e1a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="975" y="248" text-anchor="middle" font-size="12" font-weight="700" fill="#818cf8">Nginx Reverse Proxy  (:8090)</text>
+
+  <rect x="800" y="258" width="350" height="44" rx="8" fill="#13133a" stroke="#4f46e5" stroke-width="1.5"/>
+  <text x="975" y="278" text-anchor="middle" font-size="11" fill="#a5b4fc">Client 요청 → :8090</text>
+  <text x="975" y="293" text-anchor="middle" font-size="10" fill="#64748b">proxy_pass http://localhost:PORT</text>
+
+  <rect x="800" y="312" width="350" height="36" rx="8" fill="#0d1220" stroke="#1e293b" stroke-width="1"/>
+  <text x="975" y="328" text-anchor="middle" font-size="10" fill="#64748b">deploy.sh이 nginx.conf의 PORT를</text>
+  <text x="975" y="342" text-anchor="middle" font-size="10" fill="#94a3b8">sed 명령으로 동적 변경</text>
+
+  <!-- Blue PM2 -->
+  <rect x="800" y="358" width="158" height="70" rx="8" fill="#081425" stroke="#3b82f6" stroke-width="2"/>
+  <text x="879" y="382" text-anchor="middle" font-size="14" font-weight="700" fill="#3b82f6">Blue</text>
+  <text x="879" y="400" text-anchor="middle" font-size="11" fill="#93c5fd">PM2: blue</text>
+  <text x="879" y="415" text-anchor="middle" font-size="11" fill="#64748b">port :20160</text>
+  <text x="879" y="428" text-anchor="middle" font-size="10" fill="#475569">npm run start:blue</text>
+
+  <!-- swap icon -->
+  <text x="975" y="402" text-anchor="middle" font-size="20" fill="#334155">⇄</text>
+
+  <!-- Green PM2 -->
+  <rect x="992" y="358" width="158" height="70" rx="8" fill="#0a2018" stroke="#10b981" stroke-width="2"/>
+  <text x="1071" y="382" text-anchor="middle" font-size="14" font-weight="700" fill="#10b981">Green</text>
+  <text x="1071" y="400" text-anchor="middle" font-size="11" fill="#6ee7b7">PM2: green</text>
+  <text x="1071" y="415" text-anchor="middle" font-size="11" fill="#64748b">port :20161</text>
+  <text x="1071" y="428" text-anchor="middle" font-size="10" fill="#475569">npm run start:green</text>
+
+  <!-- divider -->
+  <line x1="30" y1="460" x2="1170" y2="460" stroke="#1e293b" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- ══════════════ SECTION 3: Blue-Green 시각화 ══════════════ -->
+  <text x="30" y="480" font-size="10" font-weight="700" fill="#475569" letter-spacing="2">③ BLUE-GREEN 전환 시각화  (무중단 배포)</text>
+
+  <!-- === BEFORE === -->
+  <rect x="30" y="492" width="430" height="160" rx="12" fill="#090e1a" stroke="#1e293b" stroke-width="1.5"/>
+  <text x="245" y="516" text-anchor="middle" font-size="12" font-weight="700" fill="#94a3b8">배포 전  (Blue Active)</text>
+
+  <!-- User -->
+  <rect x="54" y="528" width="90" height="44" rx="7" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="99" y="549" text-anchor="middle" font-size="10" font-weight="700" fill="#94a3b8">유저 요청</text>
+  <text x="99" y="563" text-anchor="middle" font-size="10" fill="#475569">:8090</text>
+
+  <line x1="144" y1="550" x2="166" y2="550" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Nginx -->
+  <rect x="169" y="528" width="86" height="44" rx="7" fill="#13133a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="212" y="549" text-anchor="middle" font-size="10" font-weight="700" fill="#818cf8">Nginx</text>
+  <text x="212" y="563" text-anchor="middle" font-size="10" fill="#4f46e5">:8090</text>
+
+  <line x1="255" y1="550" x2="277" y2="550" stroke="#3b82f6" stroke-width="2" marker-end="url(#arr-blue)"/>
+
+  <!-- Blue Active -->
+  <rect x="280" y="524" width="108" height="52" rx="7" fill="#081425" stroke="#3b82f6" stroke-width="2.5"/>
+  <text x="334" y="547" text-anchor="middle" font-size="12" font-weight="700" fill="#3b82f6">Blue ✅</text>
+  <text x="334" y="563" text-anchor="middle" font-size="10" fill="#64748b">:20160</text>
+
+  <!-- Green inactive -->
+  <rect x="280" y="590" width="108" height="44" rx="7" fill="#111" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="334" y="610" text-anchor="middle" font-size="11" fill="#2a3547">Green 💤</text>
+  <text x="334" y="624" text-anchor="middle" font-size="10" fill="#1e293b">:20161</text>
+
+  <text x="245" y="648" text-anchor="middle" font-size="10" fill="#475569">nginx.conf → proxy_pass :20160</text>
+
+  <!-- Arrow -->
+  <text x="490" y="577" text-anchor="middle" font-size="30" fill="#f97316">→</text>
+  <text x="490" y="598" text-anchor="middle" font-size="10" fill="#f97316">배포!</text>
+
+  <!-- === AFTER === -->
+  <rect x="546" y="492" width="430" height="160" rx="12" fill="#090e1a" stroke="#10b981" stroke-width="1.5"/>
+  <text x="761" y="516" text-anchor="middle" font-size="12" font-weight="700" fill="#10b981">배포 후  (Green Active)</text>
+
+  <!-- User -->
+  <rect x="570" y="528" width="90" height="44" rx="7" fill="#1e293b" stroke="#334155" stroke-width="1.5"/>
+  <text x="615" y="549" text-anchor="middle" font-size="10" font-weight="700" fill="#94a3b8">유저 요청</text>
+  <text x="615" y="563" text-anchor="middle" font-size="10" fill="#475569">:8090</text>
+
+  <line x1="660" y1="550" x2="682" y2="550" stroke="#64748b" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Nginx -->
+  <rect x="685" y="528" width="86" height="44" rx="7" fill="#13133a" stroke="#6366f1" stroke-width="1.5"/>
+  <text x="728" y="549" text-anchor="middle" font-size="10" font-weight="700" fill="#818cf8">Nginx</text>
+  <text x="728" y="563" text-anchor="middle" font-size="10" fill="#4f46e5">:8090</text>
+
+  <line x1="771" y1="550" x2="793" y2="550" stroke="#10b981" stroke-width="2" marker-end="url(#arr-green)"/>
+
+  <!-- Green Active -->
+  <rect x="796" y="524" width="108" height="52" rx="7" fill="#0a2018" stroke="#10b981" stroke-width="2.5"/>
+  <text x="850" y="547" text-anchor="middle" font-size="12" font-weight="700" fill="#10b981">Green ✅</text>
+  <text x="850" y="563" text-anchor="middle" font-size="10" fill="#64748b">:20161</text>
+
+  <!-- Blue deleted -->
+  <rect x="796" y="590" width="108" height="44" rx="7" fill="#111" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="850" y="610" text-anchor="middle" font-size="11" fill="#2a3547">Blue 🗑</text>
+  <text x="850" y="624" text-anchor="middle" font-size="10" fill="#1e293b">삭제됨</text>
+
+  <text x="761" y="648" text-anchor="middle" font-size="10" fill="#10b981">nginx.conf → proxy_pass :20161</text>
+
+  <!-- Key Points -->
+  <rect x="1000" y="492" width="170" height="160" rx="12" fill="#090e1a" stroke="#334155" stroke-width="1.5"/>
+  <text x="1085" y="514" text-anchor="middle" font-size="11" font-weight="700" fill="#f1f5f9">핵심 설계 포인트</text>
+  <line x1="1016" y1="520" x2="1154" y2="520" stroke="#1e293b" stroke-width="1"/>
+
+  <text x="1020" y="540" font-size="13" fill="#fbbf24">⚡</text>
+  <text x="1037" y="540" font-size="10" font-weight="700" fill="#e2e8f0">무중단 배포</text>
+  <text x="1037" y="554" font-size="9" fill="#64748b">새 프로세스 기동 후 reload</text>
+
+  <text x="1020" y="574" font-size="13" fill="#34d399">🔒</text>
+  <text x="1037" y="574" font-size="10" font-weight="700" fill="#e2e8f0">임시 SSH 키</text>
+  <text x="1037" y="588" font-size="9" fill="#64748b">EIC 등록 후 배포 완료시 삭제</text>
+
+  <text x="1020" y="608" font-size="13" fill="#60a5fa">🔄</text>
+  <text x="1037" y="608" font-size="10" font-weight="700" fill="#e2e8f0">자동 포트 전환</text>
+  <text x="1037" y="622" font-size="9" fill="#64748b">sed로 nginx.conf 동적 수정</text>
+
+  <text x="1020" y="642" font-size="13" fill="#f472b6">📦</text>
+  <text x="1037" y="642" font-size="10" font-weight="700" fill="#e2e8f0">.env 보안 관리</text>
+  <text x="1037" y="638" font-size="9" fill="#64748b"/>
+
+  <!-- divider -->
+  <line x1="30" y1="668" x2="1170" y2="668" stroke="#1e293b" stroke-width="1" stroke-dasharray="6,4"/>
+
+  <!-- ══════════════ SECTION 4: Table ══════════════ -->
+  <text x="30" y="688" font-size="10" font-weight="700" fill="#475569" letter-spacing="2">④ 포트 및 프로세스 정리</text>
+
+  <rect x="30" y="698" width="1140" height="124" rx="12" fill="#090e1a" stroke="#1e293b" stroke-width="1.5"/>
+
+  <!-- Header row -->
+  <rect x="30" y="698" width="1140" height="36" rx="12" fill="#1e293b"/>
+  <rect x="30" y="718" width="1140" height="16" fill="#1e293b"/>
+
+  <text x="120" y="721" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8">구분</text>
+  <text x="360" y="721" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8">PM2 프로세스명</text>
+  <text x="590" y="721" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8">포트</text>
+  <text x="820" y="721" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8">npm script</text>
+  <text x="1060" y="721" text-anchor="middle" font-size="11" font-weight="700" fill="#94a3b8">역할</text>
+
+  <line x1="50" y1="734" x2="1150" y2="734" stroke="#334155" stroke-width="1"/>
+
+  <!-- Blue row -->
+  <rect x="50" y="740" width="22" height="22" rx="4" fill="#3b82f6"/>
+  <text x="120" y="756" text-anchor="middle" font-size="11" fill="#93c5fd">Blue</text>
+  <text x="360" y="756" text-anchor="middle" font-size="11" fill="#e2e8f0">blue</text>
+  <text x="590" y="756" text-anchor="middle" font-size="11" fill="#60a5fa">:20160</text>
+  <text x="820" y="756" text-anchor="middle" font-size="11" fill="#e2e8f0">start:blue</text>
+  <text x="1060" y="756" text-anchor="middle" font-size="11" fill="#64748b">Active 또는 대기 (교대로 전환)</text>
+
+  <line x1="50" y1="766" x2="1150" y2="766" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- Green row -->
+  <rect x="50" y="772" width="22" height="22" rx="4" fill="#10b981"/>
+  <text x="120" y="788" text-anchor="middle" font-size="11" fill="#6ee7b7">Green</text>
+  <text x="360" y="788" text-anchor="middle" font-size="11" fill="#e2e8f0">green</text>
+  <text x="590" y="788" text-anchor="middle" font-size="11" fill="#10b981">:20161</text>
+  <text x="820" y="788" text-anchor="middle" font-size="11" fill="#e2e8f0">start:green</text>
+  <text x="1060" y="788" text-anchor="middle" font-size="11" fill="#64748b">Active 또는 대기 (교대로 전환)</text>
+
+  <line x1="50" y1="798" x2="1150" y2="798" stroke="#1e293b" stroke-width="1"/>
+
+  <!-- Nginx row -->
+  <rect x="50" y="804" width="22" height="22" rx="4" fill="#6366f1"/>
+  <text x="120" y="820" text-anchor="middle" font-size="11" fill="#818cf8">Nginx</text>
+  <text x="360" y="820" text-anchor="middle" font-size="11" fill="#475569">—</text>
+  <text x="590" y="820" text-anchor="middle" font-size="11" fill="#818cf8">:8090 (외부 노출)</text>
+  <text x="820" y="820" text-anchor="middle" font-size="11" fill="#e2e8f0">nginx.conf</text>
+  <text x="1060" y="820" text-anchor="middle" font-size="11" fill="#64748b">Reverse Proxy · 포트 동적 전환</text>
+
+  <!-- Footer -->
+  <text x="600" y="858" text-anchor="middle" font-size="10" fill="#334155">self-hosted GitHub Actions Runner (EC2)  ·  Next.js App  ·  AWS EC2 Instance Connect</text>
+</svg>
